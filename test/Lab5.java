@@ -19,4 +19,19 @@ public class Lab5 {
             assertEquals(VALUES[i], list.get(i));
         }
     }
+
+    @Test
+    public void singlylinkedlist_insert() {
+        final Integer[] VALUES = new Integer[]{1, 2, 3, 4, 5, 6, 8};
+        final Integer NEW_INDEX = 5;
+        final Integer NEW_VALUE = 7;
+
+        SinglyLinkedList<Integer> list = new SinglyLinkedList<Integer>();
+
+        for (int i : VALUES) {
+            list.push(i);
+        }
+        list.insert(NEW_INDEX, NEW_VALUE);
+        assertEquals(list.get(NEW_INDEX), NEW_VALUE);
+    }
 }
