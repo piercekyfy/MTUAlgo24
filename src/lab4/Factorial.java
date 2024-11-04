@@ -1,4 +1,4 @@
-package Lab_6;
+package lab4;
 
 public class Factorial {
     public static int recursive(int n) {

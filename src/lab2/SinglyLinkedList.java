@@ -1,4 +1,4 @@
-package Lab_5;
+package lab2;
 
 import java.util.NoSuchElementException;
 

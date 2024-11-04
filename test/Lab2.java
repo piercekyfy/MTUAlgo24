@@ -2,9 +2,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import static org.junit.jupiter.api.Assertions.*;
-import Lab_5.*;
 
-public class Lab5 {
+import lab2.*;
+
+public class Lab2 {
 
     @Test
     public void singlylinkedlist_get_returns_value_at_index() {
