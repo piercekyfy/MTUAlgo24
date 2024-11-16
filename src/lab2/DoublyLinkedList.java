@@ -2,23 +2,23 @@ package lab2;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
 
-// For the sake of simplicity, this class doesn't contain functionality for all methods of Collection<T>.
-public class SinglyLinkedList<T> implements Collection<T>, Iterable<T> {
-    private SinglyLinkedListNode<T> head;
-    private int size = 0;
-    
-    public SinglyLinkedList() {}
-
-    public SinglyLinkedList(T first) {
-        head = new SinglyLinkedListNode<>(first);
-    }
-    
-    // Collection Implementation
-    
+// These could both implement a common LinkedList<Node, Element> class, but for the sake of example code is duplicated.
+public class DoublyLinkedList<T> implements Collection<T>, Iterable<T> {
+	private DoublyLinkedListNode<T> head = null; 
+	private DoublyLinkedListNode<T> tail = null;
+	private int size = 0;
+	
+	public DoublyLinkedList() {}
+	
+	public DoublyLinkedList(T first) {
+		DoublyLinkedListNode<T> firstNode = new DoublyLinkedListNode<T>(first);
+		head = firstNode;
+		tail = firstNode;
+	}
+	
+	// Collection Implementation
+	
 	public int size() {
 		return size;
 	}
@@ -29,7 +29,7 @@ public class SinglyLinkedList<T> implements Collection<T>, Iterable<T> {
 	}
 
 	public boolean contains(Object o) {
-		SinglyLinkedListNode<T> cur = head;
+		DoublyLinkedListNode<T> cur = head;
 
 		while (cur != null) {
 			if(o.equals(cur.value)) {
@@ -43,11 +43,12 @@ public class SinglyLinkedList<T> implements Collection<T>, Iterable<T> {
 	}
 
 	public boolean add(T e) {
-		SinglyLinkedListNode<T> node = new SinglyLinkedListNode<>(e);
+		DoublyLinkedListNode<T> node = new DoublyLinkedListNode<>(e);
         if(head == null) {
             head = node;
+            tail = node;
         } else {
-        	SinglyLinkedListNode<T> cur = head;
+        	DoublyLinkedListNode<T> cur = head;
         	while(cur.next != null)
         		cur = cur.next;
             cur.next = node;
@@ -60,18 +61,16 @@ public class SinglyLinkedList<T> implements Collection<T>, Iterable<T> {
 		if(head == null)
 			return false;
 	
-		SinglyLinkedListNode<T> cur = head;
-		SinglyLinkedListNode<T> prev = null;
+		DoublyLinkedListNode<T> cur = head;
 		while (cur != null) {
 			if(o.equals(cur.value)) {
-				if(prev == null)
+				if(cur.last == null)
 					head = cur.next;
 				else
-					prev.next = cur.next;
+					cur.last.next = cur.next;
 				size--;
 				return true;
 			}
-			prev = cur;
 			cur = cur.next;
 		} 
 		
@@ -80,6 +79,7 @@ public class SinglyLinkedList<T> implements Collection<T>, Iterable<T> {
 
 	public void clear() {
 		head = null;
+		tail = null;
 		size = 0;
 	}
 
@@ -87,23 +87,22 @@ public class SinglyLinkedList<T> implements Collection<T>, Iterable<T> {
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException();
 		
-		SinglyLinkedListNode<T> cur = head;
-		SinglyLinkedListNode<T> prev = null;
+		DoublyLinkedListNode<T> cur = head;
 		int i = 0;
 		while (cur != null) {
 			if(i == index) {
-				SinglyLinkedListNode<T> newElement = new SinglyLinkedListNode<T>(element);
-				if(prev == null)
+				DoublyLinkedListNode<T> newElement = new DoublyLinkedListNode<T>(element);
+				if(cur.last == null) {
 					head = newElement;
-				else
-					prev.next = newElement;
+					tail = newElement;
+				} else
+					cur.last.next = newElement;
 				
 				newElement.next = cur.next;
 				return cur == null ? cur.value : null;
 			}
 			
 			i++;
-			prev = cur;
 			cur = cur.next;
 		}
 		
@@ -112,23 +111,24 @@ public class SinglyLinkedList<T> implements Collection<T>, Iterable<T> {
 
 	public void add(int index, T element) {
 		if(head == null) {
-			head = new SinglyLinkedListNode<T>(element);
+			DoublyLinkedListNode<T> newNode = new DoublyLinkedListNode<T>(element);
+			head = newNode;
+			tail = newNode;
 			return;
 		}
 		
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException();
 		
-		SinglyLinkedListNode<T> cur = head;
-		SinglyLinkedListNode<T> prev = null;
+		DoublyLinkedListNode<T> cur = head;
 		int i = 0;
 		while (cur != null) {
 			if(i == index) {
-				SinglyLinkedListNode<T> newElement = new SinglyLinkedListNode<T>(element);
-				if(prev == null)
+				DoublyLinkedListNode<T> newElement = new DoublyLinkedListNode<T>(element);
+				if(cur.last == null)
 					head = newElement;
 				else
-					prev.next = newElement;
+					cur.last.next = newElement;
 				
 				newElement.next = cur;
 				size++;
@@ -136,7 +136,6 @@ public class SinglyLinkedList<T> implements Collection<T>, Iterable<T> {
 			}
 			
 			i++;
-			prev = cur;
 			cur = cur.next;
 		}
 	}
@@ -145,29 +144,27 @@ public class SinglyLinkedList<T> implements Collection<T>, Iterable<T> {
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException();
 		
-		SinglyLinkedListNode<T> cur = head;
-		SinglyLinkedListNode<T> prev = null;
+		DoublyLinkedListNode<T> cur = head;
 		int i = 0;
 		while (cur != null) {
 			if(i == index) {
-				if(prev == null)
+				if(cur.last == null)
 					head = null;
 				else {
-					prev.next = cur.next;
+					cur.last.next = cur.next;
 				}
 				size--;
 				return cur.value;
 			}
 			
 			i++;
-			prev = cur;
 			cur = cur.next;
 		}
 		return null;
 	}
 
 	public int indexOf(Object o) {
-		SinglyLinkedListNode<T> cur = head;
+		DoublyLinkedListNode<T> cur = head;
 		int i = 0;
 		while (cur != null) {
 			if(o.equals(cur.value)) {
@@ -215,7 +212,7 @@ public class SinglyLinkedList<T> implements Collection<T>, Iterable<T> {
     @Override
     public Iterator<T> iterator() {
     	return new Iterator<T>() {
-    		private SinglyLinkedListNode<T> cur = head;
+    		private DoublyLinkedListNode<T> cur = head;
     		
     		@Override
     		public T next() {
@@ -237,7 +234,7 @@ public class SinglyLinkedList<T> implements Collection<T>, Iterable<T> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        SinglyLinkedListNode<T> current = head;
+        DoublyLinkedListNode<T> current = head;
         while(current.next != null){
             sb.append(current.value).append(", ");
             current = current.next;
