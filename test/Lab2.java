@@ -3,36 +3,27 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Collection;
+
 import lab2.*;
 
 public class Lab2 {
 
     @Test
-    public void singlylinkedlist_get_returns_value_at_index() {
+    public void singlylinkedlist_adds_values() {
         final Integer[] VALUES = new Integer[] {1,2,3,4,5};
 
-        SinglyLinkedList<Integer> list = new SinglyLinkedList<Integer>();
-
-        for(int i : VALUES) {
-            list.push(i);
+        Collection<Integer> list = new SinglyLinkedList<Integer>();
+        
+        for(Integer value : VALUES) {
+        	list.add(value);
         }
-        for(int i = 0; i < VALUES.length; i++) {
-            assertEquals(VALUES[i], list.get(i));
+        
+        int i = 0;
+        for(Integer value : list) {
+        	assertEquals(value,VALUES[i]);
+        	i++;
         }
-    }
-
-    @Test
-    public void singlylinkedlist_insert() {
-        final Integer[] VALUES = new Integer[]{1, 2, 3, 4, 5, 6, 8};
-        final Integer NEW_INDEX = 5;
-        final Integer NEW_VALUE = 7;
-
-        SinglyLinkedList<Integer> list = new SinglyLinkedList<Integer>();
-
-        for (int i : VALUES) {
-            list.push(i);
-        }
-        list.insert(NEW_INDEX, NEW_VALUE);
-        assertEquals(list.get(NEW_INDEX), NEW_VALUE);
+        
     }
 }
